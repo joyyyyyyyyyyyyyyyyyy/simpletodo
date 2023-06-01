@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextSize(18);
+                ((TextView) parent.getChildAt(0)).setTextSize(18); //to set the text size of the spinner
                 switch(position) {
                     case 0:
                         addtasks.setHint("enter a task to add");
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         delete.setTextColor(Color.WHITE);
                         delete.setEnabled(false);
                         add.setEnabled(true);
+                        addtasks.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                         break;
                     case 1:
                         addtasks.setHint("enter a index to remove task");
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         add.setTextColor(Color.WHITE);
                         add.setEnabled(false);
                         delete.setEnabled(true);
+                        addtasks.setInputType(InputType.TYPE_CLASS_NUMBER);
                         break;
                 }
             }
@@ -75,9 +78,14 @@ public class MainActivity extends AppCompatActivity {
 
         add.setOnClickListener(v -> {
             String newtodo = addtasks.getText().toString();
-            altodo.add(newtodo);
-            aatodo.notifyDataSetChanged();
-            addtasks.setText(null);
+            //check that if task input is empty, error message will be shown to indicate that empty task cannot be added to the list
+            if (newtodo.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Empty task cannot be added", Toast.LENGTH_LONG).show();
+            } else {
+                altodo.add(newtodo);
+                aatodo.notifyDataSetChanged();
+                addtasks.setText(null);
+            }
         });
 
         clear.setOnClickListener(v -> {
@@ -87,16 +95,21 @@ public class MainActivity extends AppCompatActivity {
 
         delete.setOnClickListener(v -> {
             String index = addtasks.getText().toString();
-            int indexno = Integer.parseInt(index);
-            //enhancement 2
-            if (altodo.isEmpty()) {
-                Toast.makeText(MainActivity.this, "You don't have any task to remove", Toast.LENGTH_LONG).show();
-            } else if (indexno < 0 || indexno >= altodo.size()) {
-                Toast.makeText(MainActivity.this, "Wrong index number", Toast.LENGTH_LONG).show();
+
+            if (index.isEmpty()) {
+                Toast.makeText(MainActivity.this, "No index has been entered", Toast.LENGTH_LONG).show();
             } else {
-                altodo.remove(indexno);
-                aatodo.notifyDataSetChanged();
+                int indexno = Integer.parseInt(index);
+                if (altodo.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "You don't have any task to remove", Toast.LENGTH_SHORT).show();
+                } else if (indexno < 0 || indexno >= altodo.size()) {
+                    Toast.makeText(MainActivity.this, "Wrong index number", Toast.LENGTH_SHORT).show();
+                } else {
+                    altodo.remove(indexno);
+                    aatodo.notifyDataSetChanged();
+                }
             }
+
         });
 
     }
