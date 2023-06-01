@@ -96,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
         delete.setOnClickListener(v -> {
             String index = addtasks.getText().toString();
 
-            if (index.isEmpty()) {
+            if (index.isEmpty()) { //display error message if index is empty
                 Toast.makeText(MainActivity.this, "No index has been entered", Toast.LENGTH_LONG).show();
             } else {
                 int indexno = Integer.parseInt(index);
-                if (altodo.isEmpty()) {
+                if (altodo.isEmpty()) { //enhancement 2
                     Toast.makeText(MainActivity.this, "You don't have any task to remove", Toast.LENGTH_SHORT).show();
-                } else if (indexno < 0 || indexno >= altodo.size()) {
+                } else if (indexno < 0 || indexno >= altodo.size()) { //enhancement 2
                     Toast.makeText(MainActivity.this, "Wrong index number", Toast.LENGTH_SHORT).show();
                 } else {
                     altodo.remove(indexno);
