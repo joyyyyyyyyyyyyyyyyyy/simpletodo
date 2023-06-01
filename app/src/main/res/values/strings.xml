@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">simpletodo</string>
+    <string name="todo">- To-Do List -</string>
+    <string-array name="spinnerItems">
+        <item>add a task:</item>
+        <item>remove a task:</item>
+    </string-array>
+</resources>
